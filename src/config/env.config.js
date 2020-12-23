@@ -1,6 +1,6 @@
 const DEV_BASE_API = './pro'
 const TEST_BASE_API = ''
-const PRO_BASE_API = '/control'
+const PRO_BASE_API = '/apartment'
 const envConfig = {
   dev: {
     baseApi: DEV_BASE_API
@@ -15,7 +15,7 @@ const envConfig = {
 
 // export const WEBSOCKET_URL = 'https://aliiot.on-bright.com/pro/websocket/{topic}'
 // export const WEBSOCKET_URL = 'https://aliiot.on-bright.com/nurseTest/websocket/{topic}'
-export const WEBSOCKET_URL = '/control/websocket/{topic}'
+export const WEBSOCKET_URL = '/apartment/websocket/{topic}'
 
 export function isProEnv () {
   return process.env.NODE_ENV === 'production'

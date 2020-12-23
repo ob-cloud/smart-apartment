@@ -105,7 +105,7 @@ const vueConfig = {
     port: 8000,
     proxy: {
       '/pro': {
-        target: 'https://aliiot.on-bright.com/control',
+        target: 'https://aliiot.on-bright.com/apartment',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
