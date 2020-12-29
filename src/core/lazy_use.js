@@ -45,7 +45,9 @@ import {
   Descriptions,
   message,
   notification,
-  Carousel
+  Carousel,
+  TreeSelect,
+  Empty
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -54,6 +56,7 @@ import VueCropper from 'vue-cropper'
 import Dialog from '@/components/Dialog'
 import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
+import ContentMain from '@/components/MainContainer/ContentMain/index'
 // import PermissionHelper from '@/core/permission/permission'
 // import './directives/action'
 // permission
@@ -106,6 +109,8 @@ Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
 Vue.use(Carousel)
+Vue.use(TreeSelect)
+Vue.use(Empty)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message
@@ -119,6 +124,8 @@ Vue.use(Viser)
 Vue.use(Dialog) // this.$dialog func
 Vue.use(MultiTab)
 Vue.use(PageLoading)
+Vue.use(ContentMain)
+
 // Vue.use(PermissionHelper)
 Vue.use(VueCropper)
 Vue.use(isPermitted)

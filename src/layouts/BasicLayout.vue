@@ -1,5 +1,6 @@
 <template>
   <pro-layout
+    class="pro-layout"
     :menus="menus"
     :collapsed="collapsed"
     :mediaQuery="query"
@@ -8,6 +9,8 @@
     :handleCollapse="handleCollapse"
     :i18nRender="i18nRender"
     v-bind="settings"
+    :collapsedButtonRender="false"
+    :visible="false"
   >
     <!-- 1.0.0+ 版本 pro-layout 提供 API，
           我们推荐使用这种方式进行 LOGO 和 title 自定义
@@ -19,9 +22,15 @@
       </div>
     </template>
 
-    <template v-slot:rightContentRender>
+    <!-- <template v-slot:headerContentRender>
+    </template> -->
+    <!-- <template v-slot:collapsedButtonRender>
+      <div></div>
+    </template> -->
+
+    <!-- <template v-slot:rightContentRender>
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
-    </template>
+    </template> -->
     <!-- <template v-slot:footerRender>
       <global-footer />
     </template> -->
@@ -127,4 +136,8 @@ export default {
 
 <style lang="less">
 @import "./BasicLayout.less";
+
+.ant-layout /deep/ .ant-pro-basicLayout-content{
+  margin: 0;
+}
 </style>

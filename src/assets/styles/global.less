@@ -92,3 +92,169 @@ ol {
     }
   }
 }
+
+
+
+
+blockquote,body,button,code,dd,div,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,input,legend,li,ol,p,pre,td,textarea,th,ul {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased
+}
+
+body {
+  background: #fff;
+  color: #555;
+  -webkit-font-smoothing: antialiased;
+  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+}
+
+body,caption,td,th {
+  font-size: 14px
+}
+
+:active,:focus {
+  outline: none!important
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: 400;
+  font-size: 100%
+}
+
+address,caption,cite,code,dfn,th,var {
+  font-style: normal;
+  font-weight: 400
+}
+
+a {
+  color: #555
+}
+
+a,a:hover {
+  text-decoration: none
+}
+
+img {
+  border: none
+}
+
+li,ol,ul {
+  list-style: none
+}
+
+button,input,select,textarea {
+  font: 14px Verdana,Helvetica,Arial,sans-serif
+}
+
+table {
+  border-collapse: collapse
+}
+
+.houseAlias {
+  color: #409eff!important;
+  border-radius: 3px;
+  font-size: 12px;
+  padding: 0 4px;
+  border: 1px solid #409eff!important;
+  margin-right: 6px
+}
+
+.add-btn-wrap {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  margin: 9px 0;
+  width: 112px;
+  height: 32px;
+  line-height: 32px;
+  color: #fff;
+  background-color: #0a87f8;
+  border-radius: 18px;
+  text-align: center;
+  font-size: 14px;
+  z-index: 100;
+  cursor: pointer
+}
+
+.overHidde {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
+}
+
+.cursor {
+  cursor: pointer
+}
+
+.f-clearfix {
+  zoom:1}
+
+.f-clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden
+}
+
+.f-fl {
+  float: left
+}
+
+.f-fr {
+  float: right
+}
+
+.f-ftc-blue {
+  color: #0a87f8
+}
+
+.loadingCircle {
+  width: 46px;
+  height: 46px;
+  border: 1px solid #002140;
+  border-radius: 50%;
+  position: fixed;
+  z-index: 999;
+  left: 18px;
+  top: 10px;
+  -webkit-animation: "loadingCircle"1s linear infinite;
+  animation: loadingCircleMove 1s linear infinite;
+  -webkit-box-shadow: 0 4px 6px 0 rgba(52, 159, 255, .5);
+  box-shadow: 0 4px 6px 0 rgba(52, 159, 255, .5)
+}
+
+@-webkit-keyframes loadingCircleMove {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg)
+  }
+
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn)
+  }
+}
+
+@keyframes loadingCircleMove {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg)
+  }
+
+  to {
+    -webkit-transform: rotate(1turn);
+    transform: rotate(1turn)
+  }
+}
+
+/////////////
+
+.slim /deep/ .ant-modal-body {
+  padding: 0;
+}

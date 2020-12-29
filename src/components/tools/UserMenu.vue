@@ -6,8 +6,8 @@
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">
           <a-avatar v-if="avatar" class="avatar" size="small" :src="avatar" />
-          <a-avatar v-else>Hotel</a-avatar>
-          <span>{{ nickname }}</span>
+          <a-avatar v-else>User</a-avatar>
+          <span style="margin-left: 5px;">{{ nickname }}</span>
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
           <!-- <a-menu-item key="0">

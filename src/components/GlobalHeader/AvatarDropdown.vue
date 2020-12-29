@@ -4,7 +4,7 @@
       <span class="ant-pro-account-avatar">
         <a-avatar v-if="currentUser.avatar" class="antd-pro-global-header-index-avatar" size="small" :src="currentUser.avatar" />
         <a-avatar v-else style="margin-right: 5px;">User</a-avatar>
-        <span>{{ currentUser.username }}</span>
+        <span style="margin-left: 5px;">{{ currentUser.username }}</span>
       </span>
       <template v-slot:overlay>
         <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">

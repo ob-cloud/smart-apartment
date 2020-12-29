@@ -99,6 +99,15 @@ const vueConfig = {
       }
     }
   },
+  // 全局使用 less 变量
+  // pluginOptions: {
+  //   'style-resources-loader': {
+  //     preProcessor: 'less',
+  //     patterns: [
+  //       path.resolve(__dirname, './src/assets/styles/global.less'),
+  //     ]
+  //   }
+  // },
 
   devServer: {
     // development server port 8000
