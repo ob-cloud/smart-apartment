@@ -9,9 +9,9 @@
     :handleCollapse="handleCollapse"
     :i18nRender="i18nRender"
     v-bind="settings"
-    :collapsedButtonRender="false"
-    :visible="false"
   >
+    <!-- :collapsedButtonRender="false"
+    :visible="false" -->
     <!-- 1.0.0+ 版本 pro-layout 提供 API，
           我们推荐使用这种方式进行 LOGO 和 title 自定义
     -->
@@ -137,7 +137,7 @@ export default {
 <style lang="less">
 @import "./BasicLayout.less";
 
-.ant-layout /deep/ .ant-pro-basicLayout-content{
-  margin: 0;
-}
+// .ant-layout /deep/ .ant-pro-basicLayout-content{
+//   margin: 0;
+// }
 </style>

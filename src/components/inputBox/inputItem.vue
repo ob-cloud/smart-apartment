@@ -1,16 +1,16 @@
 <template>
   <!-- 输入框方块  注:非必要情况下切勿修改此模板，请使用 deep 语法修改样式  -->
   <div class="form-input-item" :style="{ width: width, height: height, marginRight: right }">
-	  <div class="input-item-box">
-	    <span class="input-item-label">{{ title }}</span>
-	    <span class="must-tips" v-if="must">*</span>
-	    <span class="input-item-text" v-if="tipTxt">{{ tipTxt }}</span>
-	  </div>
-	  <div class="slot-content">
-	    <slot name="content"></slot>
-	  </div>
-	  <div v-if="required" class="must-tips-text">&nbsp;{{ error }}</div>
-	</div>
+    <div class="input-item-box">
+      <span class="input-item-label">{{ title }}</span>
+      <span class="must-tips" v-if="must">*</span>
+      <span class="input-item-text" v-if="tipTxt">{{ tipTxt }}</span>
+    </div>
+    <div class="slot-content">
+      <slot name="content"></slot>
+    </div>
+    <div v-if="required" class="must-tips-text">&nbsp;{{ error }}</div>
+  </div>
 </template>
 
 <script>

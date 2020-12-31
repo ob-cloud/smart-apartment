@@ -1047,9 +1047,6 @@ export default {
       line-height: 48px;
     }
   }
-  .rl-center {
-    // margin: 10px 4% 0;
-  }
   .mb20 {
     margin-bottom: 20px;
     text-align: center;
