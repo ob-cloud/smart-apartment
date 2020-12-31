@@ -5,7 +5,7 @@
       <a-icon type="home"></a-icon>
       添加房源
     </div>
-    <content-top>
+    <!-- <content-top>
       <top-status class="f-fl" :statusData="statusData"></top-status>
       <div class="f-fr moreStyle cursor moreStyle1">
         <a-popover v-if="showMoreFlag" :title="null" trigger="hover" placement="bottomLeft">
@@ -21,16 +21,20 @@
         <a-icon v-else type="more" class="moreColor"></a-icon>
       </div>
       <search-dialog class="f-fr" style="margin-right: 10px;"></search-dialog>
-    </content-top>
+    </content-top> -->
 
-    <content-main v-show="!isListMode && !spinLoading" id="contentScroll">
+    <!-- <content-main v-show="!isListMode && !spinLoading" id="contentScroll">
       <block-list-mode></block-list-mode>
       <more-loading v-if="showMoreLoading"></more-loading>
     </content-main>
 
     <content-main v-show="isListMode">
       <table-list-mode></table-list-mode>
-    </content-main>
+    </content-main> -->
+    <a-card>
+      <block-list-mode></block-list-mode>
+      <more-loading v-if="showMoreLoading"></more-loading>
+    </a-card>
 
     <add-house-modal ref="addHouse"></add-house-modal>
   </page-header-wrapper>
