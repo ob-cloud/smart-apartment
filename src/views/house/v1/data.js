@@ -16,7 +16,7 @@ export const HouseList = {
     'area': '西城区',
     'branchName': 'AV校区',
     'roomStatus': 1,
-    'isValid': 2,
+    'isValid': 1,
     'startTime': 1609317804429,
     'idleTime': null,
     'endTime': 1609317804429,

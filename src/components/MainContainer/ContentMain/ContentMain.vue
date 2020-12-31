@@ -16,7 +16,7 @@ export default {
 .content-main {
   padding: 20px;
   // height: calc(100vh - 100px);
-  overflow: auto;
+  // overflow: auto;
 
   .content {
     // min-height: calc(100vh - 220px);

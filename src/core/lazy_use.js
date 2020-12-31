@@ -50,7 +50,8 @@ import {
   Empty,
   Collapse,
   Cascader,
-  Space
+  Space,
+  FormModel
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -117,6 +118,7 @@ Vue.use(Empty)
 Vue.use(Collapse)
 Vue.use(Cascader)
 Vue.use(Space)
+Vue.use(FormModel)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

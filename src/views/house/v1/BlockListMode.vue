@@ -74,7 +74,7 @@
                 <p>{{ item.address }}</p>
               </a-col>
               <a-col class="text-r">
-                <a-button type="primary" size="small" v-if="isShowList('房源管理','常开')" title="请勾选房间" :disabled="!item.select.length" @click.stop="opensRoom(item.select)">批量常开</a-button>
+                <a-button type="primary" size="small" title="请勾选房间" :disabled="!item.select.length" @click.stop="opensRoom(item.select)">批量常开</a-button>
                 <!-- <a-button type="primary" icon="plus" shape="circle" title="新增房源" @click="$router.push({path:'/home/addNew',query:{branchId:item.branchId,building:item.building}})" v-if="isShowList('房源管理','房间操作')"></a-button> -->
               </a-col>
             </a-row>
@@ -89,8 +89,7 @@
               style="width: 100%">
               <a-table-column
                 title="#"
-                dataIndex="index"
-                width="55">
+                dataIndex="index">
                 <template slot-scope="text, record, index">
                   {{ index + 1 }}
                 </template>
@@ -98,13 +97,11 @@
               <a-table-column
                 dataIndex="roomNo"
                 title="房间号"
-                width="150"
                 align="center">
               </a-table-column>
               <a-table-column
                 key="devStatus"
                 title="设备状态"
-                width="100"
                 align="center">
                 <template slot-scope="devStatus, record">
                   <span :style="{ color: record.isValid === 0 ? 'green' : record.isValid === 1 ? 'red' : '#ccc'}">
@@ -115,17 +112,14 @@
               <a-table-column
                 key="status"
                 title="房态"
-                align="center"
-                width="100">
+                align="center">
                 <template slot-scope="status, record">
                   {{ record.blocking === 1 ? '冻结' : (orderType[record.orderStatus] || roomType[record.roomStatus]) }}
-                  <!-- {{orderType[record.orderStatus] + (orderType[record.orderStatus] ? ' / ':'') + roomType[record.roomStatus]}} -->
                 </template>
               </a-table-column>
               <a-table-column
                 key="open"
                 title="常开"
-                width="100"
                 align="center">
                 <template slot-scope="text, record">
                   <p v-if="record.alwaysEndTime === 0 || record.alwaysEndTime < ( new Date()*1)">关</p>
@@ -146,53 +140,51 @@
                   </a-tooltip>
                 </template>
               </a-table-column>
-              <a-table-column title="设置" align="center" key="action">
+              <a-table-column title="设置" align="center" key="action" width="200px">
                 <template slot-scope="text, record">
                   <div v-if="record.isValid != '2'" >
                     <div v-if="record.blocking != 1">
-                      <a-button type="primary" plain size="small" @click.stop="enterRoom(record)" v-if="isShowList('房源管理','租房操作')">入住</a-button>
-                      <a-button type="primary" plain size="small" @click.stop="watchRoom(record)" v-if="isShowList('房源管理','房态操作')">看房</a-button>
-                      <a-button type="primary" plain size="small" @click.stop="backRoom(record)" :disabled="record.orderStatus != 5" v-if="isShowList('房源管理','房态操作')">退房</a-button>
-                      <span @click.stop="">
-                        <a-dropdown size="small" trigger="click" split-button type="primary" style="margin:0 10px;" >
-                          更多
-                          <a-dropdown-menu slot="dropdown">
-                            <a-dropdown-item divided v-if="isShowList('房源管理','房态操作')">
+                      <a-space>
+                        <a-button type="primary" shape="circle" size="small" @click.stop="enterRoom(record)">住</a-button>
+                        <a-button type="primary" shape="circle" size="small" @click.stop="watchRoom(record)">看</a-button>
+                        <a-button type="primary" shape="circle" size="small" @click.stop="backRoom(record)" :disabled="record.orderStatus != 5">退</a-button>
+                        <a-dropdown size="small" :trigger="['click']" type="primary" style="margin:0 10px;" >
+                          <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                            <a-icon type="more" />
+                          </a>
+                          <a-menu slot="overlay">
+                            <a-menu-item key="1">
                               <a-button type="primary" plain size="small" @click.stop="blankRoom(record)">空闲</a-button>
-                            </a-dropdown-item>
-                            <a-dropdown-item divided v-if="isShowList('房源管理','房态操作')">
+                            </a-menu-item>
+                            <a-menu-item key="2">
                               <a-button type="primary" plain size="small" @click.stop="clearRoom(record)">清洁</a-button>
-                            </a-dropdown-item>
-                            <a-dropdown-item divided v-if="isShowList('房源管理','停用')">
+                            </a-menu-item>
+                            <a-menu-item key="3">
                               <a-button type="primary" plain size="small" @click.stop="fzRoom(record)">冻结</a-button>
-                            </a-dropdown-item>
-                            <a-dropdown-item divided v-if="isShowList('房源管理','常开')">
+                            </a-menu-item>
+                            <a-menu-item key="4">
                               <a-button type="primary" plain size="small" @click.stop="opensRoom([record])">常开</a-button>
-                            </a-dropdown-item>
-                            <!-- <a-dropdown-item divided>
-                                <a-button type="primary" plain size="small" @click="resendRoom(record)">重发</a-button>
-                              </a-dropdown-item> -->
-                            <a-dropdown-item divided v-if="isShowList('房源管理','房间记录')">
+                            </a-menu-item>
+                            <a-menu-item key="5">
                               <a-button type="primary" plain size="small" @click.stop="getRoomList(record)">记录</a-button>
-                            </a-dropdown-item>
-                          </a-dropdown-menu>
+                            </a-menu-item>
+                          </a-menu>
                         </a-dropdown>
-                      </span>
+                      </a-space>
                     </div>
                     <div v-else>
-                      <a-button type="primary" plain size="small" @click.stop="closeFZ(record)" v-if="isShowList('房源管理','停用')">解冻</a-button>
+                      <a-button type="primary" plain size="small" @click.stop="closeFZ(record)">解冻</a-button>
                     </div>
                   </div>
                   <div v-else>
-                    <a-button type="primary" plain size="small" @click.stop="bindRoom(record)" v-if="isShowList('房源管理','关联设备')">绑定设备</a-button>
+                    <a-button type="primary" plain size="small" @click.stop="bindRoom(record)">绑定设备</a-button>
                   </div>
                 </template>
               </a-table-column>
               <a-table-column
                 key="oper"
                 title="操作"
-                align="center"
-                width="100">
+                align="center">
                 <template slot-scope="text, record">
                   <a-space>
                     <a-button :disabled="isActionDisable(record)" type="default" icon="edit" circle size="small" @click.stop="editRoom(record)" title="编辑"></a-button>
@@ -320,6 +312,7 @@
       </div>
     </a-modal>
     <bind-room-modal ref="roomModal"></bind-room-modal>
+    <add-user-modal ref="userModal"></add-user-modal>
   </div>
 </template>
 
@@ -327,8 +320,9 @@
 
 import { postAction, getAction } from '@/utils/ajax'
 import BindRoomModal from './BindRoomModal'
+import AddUserModal from './AddUserModal'
 export default {
-  components: { BindRoomModal },
+  components: { BindRoomModal, AddUserModal },
   data() {
     return {
       toggleSearchStatus: false,
@@ -785,12 +779,7 @@ export default {
       })
     },
     enterRoom(row) {
-      this.$router.push({
-        path: '/home/addUser',
-        query: {
-          roomId: row.id
-        }
-      })
+      this.$refs.userModal.show({ roomId: row.id })
     },
     blankRoom(row) {
       if (this.$moment(this.formInline.date).format('YYYYMMDD') !== this.$moment(new Date()).format('YYYYMMDD')) {
@@ -1055,7 +1044,7 @@ export default {
     }
   }
   .rl-center {
-    margin: 10px 4% 0;
+    // margin: 10px 4% 0;
   }
   .mb20 {
     margin-bottom: 20px;
