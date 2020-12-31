@@ -220,8 +220,8 @@
       </a-form>
       <p class="warm-tip">点击“确认”后会将看房临时密码发至预留手机，15分钟内生效。点击“返回”取消该次授权</p>
       <div slot="footer" class="dialog-footer">
-        <a-button type="primary" :disabled="!form.phone" @click="sureWatch">确 定</a-button>
         <a-button @click="dialog1 = false">取 消</a-button>
+        <a-button type="primary" :disabled="!form.phone" @click="sureWatch">确 定</a-button>
       </div>
     </a-modal>
 
@@ -229,8 +229,11 @@
       <p class="mb20"><strong>将结束“{{ dealRoomInfo.building }}栋-{{ dealRoomInfo.roomNo }}房”的授权，结束时间：{{ dealRoomInfo.ds }}</strong></p>
       <a-form :model="form" laba-width="160px">
         <a-form-item label="是否自动通知打扫房间">
-          <a-radio v-model="form.autoClear" label="1">是</a-radio>
-          <a-radio v-model="form.autoClear" label="0">否</a-radio>
+          <a-radio-group v-model="form.autoClear">
+            <a-radio value="1">是</a-radio>
+            <a-radio value="0">否</a-radio>
+          </a-radio-group>
+
         </a-form-item>
         <a-form-item label="选择员工">
           <a-select v-model="form.clearId" :disabled="form.autoClear === '0'" style="width:250px;" placeholder="请选择活动区域" @change="getPhone">
@@ -241,14 +244,14 @@
       </a-form>
       <p class="warm-tip">点击“确认”后将结束本次授权，点击“返回”重新编辑勾选自动通知，结束本次操作将自动通知清洁工打扫卫生</p>
       <div slot="footer" class="dialog-footer">
-        <a-button type="primary" :disabled="form.autoClear === '1' && form.clearId === ''" @click="sureBack">确 定</a-button>
         <a-button @click="dialog2 = false">取 消</a-button>
+        <a-button type="primary" :disabled="form.autoClear === '1' && form.clearId === ''" @click="sureBack">确 定</a-button>
       </div>
     </a-modal>
 
     <a-modal title="清洁" :visible.sync="dialog3" center width="500px">
       <p class="mb20"><strong>是否将房态切换为清洁中</strong></p>
-      <a-form :model="form" laba-width="150px">
+      <a-form :model="form">
         <a-form-item label="选择员工">
           <a-select v-model="form.mobile" style="width:250px;" placeholder="选择员工" @change="getPhone">
             <a-select-option value="">请选择员工</a-select-option>
@@ -260,8 +263,8 @@
         </a-form-item>
       </a-form>
       <div slot="footer" class="dialog-footer">
-        <a-button type="primary" :disabled="!form.phone" @click="sureClearRoom">确 定</a-button>
         <a-button @click="dialog3 = false">取 消</a-button>
+        <a-button type="primary" :disabled="!form.phone" @click="sureClearRoom">确 定</a-button>
       </div>
     </a-modal>
 
@@ -269,7 +272,7 @@
       <div class="text-r">
         <a-button type="info" @click="closeAlopen">关闭常开</a-button>
       </div>
-      <a-form class="">
+      <a-form :model="form">
         <a-form-item label="常开次数：">
           <a-radio-group v-model="form.radio">
             <a-radio-button label="1">多次</a-radio-button>
@@ -277,10 +280,10 @@
         </a-form-item>
         <a-form-item label="常开时间：">
           <a-range-picker
-            v-decorator="[ 'time', {} ]"
+            v-model="form.time"
             format="YYYY-MM-DD HH:mm:ss"
             valueFormat="YYYY-MM-DD HH:mm:ss"
-            :placeholder="['开始时间', '结束时间']"
+            :placeholder="['开始日期', '结束日期']"
           />
           <!-- <a-date-picker
             v-model="form.time"
@@ -297,8 +300,8 @@
         点击确定后，该房间处于“常开”模式，在门锁端按“0#”即可开门
       </p>
       <div slot="footer" class="dialog-footer">
-        <a-button type="primary" :disabled="!(form.time && form.time.length)" @click="sureOpen">确 定</a-button>
         <a-button @click="dialog4 = false">取 消</a-button>
+        <a-button type="primary" :disabled="!(form.time && form.time.length)" @click="sureOpen">确 定</a-button>
       </div>
     </a-modal>
     <!-- 舍弃 start-->
@@ -313,6 +316,7 @@
     </a-modal>
     <bind-room-modal ref="roomModal"></bind-room-modal>
     <add-user-modal ref="userModal"></add-user-modal>
+    <room-list-modal ref="roomListModal"></room-list-modal>
   </div>
 </template>
 
@@ -321,8 +325,10 @@
 import { postAction, getAction } from '@/utils/ajax'
 import BindRoomModal from './BindRoomModal'
 import AddUserModal from './AddUserModal'
+import RoomListModal from './RoomListModal'
+import moment from 'moment'
 export default {
-  components: { BindRoomModal, AddUserModal },
+  components: { BindRoomModal, AddUserModal, RoomListModal },
   data() {
     return {
       toggleSearchStatus: false,
@@ -390,7 +396,8 @@ export default {
         resource: '',
         desc: ''
       },
-      searchDate: ''
+      searchDate: '',
+      moment
     }
   },
   computed: {
@@ -553,7 +560,7 @@ export default {
       this.form.phone = ''
       this.form.mobile = ''
       this.dealRoomInfo = Object.assign({}, item, {
-        ds: this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
+        ds: this.moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
       })
       this.dialog1 = true
     },
@@ -669,8 +676,8 @@ export default {
         return postAction(`/doorLockSys/setAlwaysStatus`,
               {
                 'roomId': ele.id,
-                'startTime': this.form.time[0].getTime(),
-                'endTime': this.form.time[1].getTime(),
+                'startTime': this.form.time[0],
+                'endTime': this.form.time[1],
                 'times': this.form.radio === '1' ? 0 : 1,
                 'isMax': this.form.radio === '1' ? 1 : 0,
                 'roomNo': ele.roomNo,
@@ -697,45 +704,39 @@ export default {
       })
     },
     closeAlopen() {
-      this.$confirm('是否关闭该房间常开功能', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-        beforeClose: (action, instance, done) => {
-          if (action === 'confirm') {
-            const tarPromise = this.dealRoomInfo.map(ele => {
-              return postAction(`/doorLockSys/delAlwaysStatus`, {
-                    'deviceSerialIdArray': [
-                      {
-                      'innerLockSerialId': ele.innerLockSerialId,
-                      'outerLockSerialId': ele.outerLockSerialId
-                      }
-                    ],
-                    'roomId': ele.id
-                  })
-            })
-            Promise.all(tarPromise)
-            .then((response) => {
-              this.dialog4 = false
-              if (response.every(ele => ele.data.status === '205')) {
-                this.$message.success('关闭常开成功')
-                this.queryAllDoorLockRoom()
-              } else {
-                this.$message.error('关闭常开失败')
-              }
-              done()
-            })
-            .catch(() => {
+      this.$confirm({
+        title: '提示',
+        icon: 'warning',
+        content: `是否关闭该房间常开功能`,
+        onOk: () => {
+         const tarPromise = this.dealRoomInfo.map(ele => {
+            return postAction(`/doorLockSys/delAlwaysStatus`, {
+                  'deviceSerialIdArray': [
+                    {
+                    'innerLockSerialId': ele.innerLockSerialId,
+                    'outerLockSerialId': ele.outerLockSerialId
+                    }
+                  ],
+                  'roomId': ele.id
+                })
+          })
+          Promise.all(tarPromise)
+          .then((response) => {
+            this.dialog4 = false
+            if (response.every(ele => ele.data.status === '205')) {
+              this.$message.success('关闭常开成功')
+              this.queryAllDoorLockRoom()
+            } else {
               this.$message.error('关闭常开失败')
-              this.dialog4 = false
-              done()
-            })
-          } else {
-            done()
-          }
+            }
+          })
+          .catch(() => {
+            this.$message.error('关闭常开失败')
+            this.dialog4 = false
+          })
+        },
+        onCancel () {
         }
-      }).then(() => {
-      }).catch(() => {
       })
     },
     backRoom(row) {
@@ -782,46 +783,46 @@ export default {
       this.$refs.userModal.show({ roomId: row.id })
     },
     blankRoom(row) {
-      if (this.$moment(this.formInline.date).format('YYYYMMDD') !== this.$moment(new Date()).format('YYYYMMDD')) {
+      if (this.moment(this.formInline.date).format('YYYYMMDD') !== this.moment(new Date()).format('YYYYMMDD')) {
         this.$message('搜索日期与当前日期不相符，不能操作空闲，清洁')
         return
       }
-      this.$confirm(`<p><strong>是否将该房切换为空闲房</strong></p><p style="color:rgb(240, 197, 132);margin-top:6px;">点击“确定”后该房间当前的授权信息将被删除，点击“取消”返回</p>`, '切换空房', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        dangerouslyUseHTMLString: true,
-        type: 'warning',
-        center: true
-      }).then(() => {
-        postAction(`/doorLockSys/updateRoomStatus`, {
-          'id': row.id,
-          'roomStatus': 1,
-          'orderStatus': row.orderStatus,
-          'innerLockSerialId': row.innerLockSerialId,
-          'outerLockSerialId': row.outerLockSerialId,
-          'startTime': row.startTime,
-          'idleTime': row.orderStatus === 5 ? (this.$moment(this.$moment(row.endTime).format('YYYY-MM-DD')).add(1, 'day') - 1) : (this.$moment(this.$moment().format('YYYY-MM-DD')).add(1, 'day') - 1),
-          'endTime': row.orderStatus === 5 ? row.endTime : (this.$moment(this.$moment().format('YYYY-MM-DD')).add(1, 'day') - 1),
-          'roomNo': row.roomNo,
-          'updateDate': new Date().getTime()
-        })
-        .then((response) => {
-          console.log(response)
-          if (response.data.status === '205') {
-            this.$message.success('切换空闲房成功')
-            this.queryAllDoorLockRoom()
-          } else {
+      this.$confirm({
+        title: '切换空房',
+        icon: 'warning',
+        content: h => <div><p><strong>是否将该房切换为空闲房</strong></p><p style="color:rgb(240, 197, 132);margin-top:6px;">点击“确定”后该房间当前的授权信息将被删除，点击“取消”返回</p></div>,
+        onOk: () => {
+          postAction(`/doorLockSys/updateRoomStatus`, {
+            'id': row.id,
+            'roomStatus': 1,
+            'orderStatus': row.orderStatus,
+            'innerLockSerialId': row.innerLockSerialId,
+            'outerLockSerialId': row.outerLockSerialId,
+            'startTime': row.startTime,
+            'idleTime': row.orderStatus === 5 ? (this.moment(this.moment(row.endTime).format('YYYY-MM-DD')).add(1, 'day') - 1) : (this.moment(this.moment().format('YYYY-MM-DD')).add(1, 'day') - 1),
+            'endTime': row.orderStatus === 5 ? row.endTime : (this.moment(this.moment().format('YYYY-MM-DD')).add(1, 'day') - 1),
+            'roomNo': row.roomNo,
+            'updateDate': new Date().getTime()
+          })
+          .then((response) => {
+            console.log(response)
+            if (response.data.status === '205') {
+              this.$message.success('切换空闲房成功')
+              this.queryAllDoorLockRoom()
+            } else {
+              this.$message.error('切换失败！')
+            }
+          })
+          .catch(() => {
             this.$message.error('切换失败！')
-          }
-        })
-        .catch(() => {
-          this.$message.error('切换失败！')
-        })
-      }).catch(() => {
+          })
+        },
+        onCancel () {
+        }
       })
     },
     clearRoom(row) {
-      if (this.$moment(this.formInline.date).format('YYYYMMDD') !== this.$moment(new Date()).format('YYYYMMDD')) {
+      if (this.moment(this.formInline.date).format('YYYYMMDD') !== this.moment(new Date()).format('YYYYMMDD')) {
         this.$message('搜索日期与当前日期不相符，不能操作空闲，清洁')
         return
       }
@@ -831,85 +832,86 @@ export default {
       this.dialog3 = true
     },
     frozenRoom() {
-      this.$confirm(`<p style="color:rgb(240, 197, 132);"><strong>是否冻结该房源，冻结后，所有临时密码将无法开门</strong></p>`, '冻结房源', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        dangerouslyUseHTMLString: true,
-        type: 'warning',
-        center: true
-      }).then(() => {
-        if (this.dealRoomInfo.orderStatus === 5) {
-          postAction(`/doorLockSys/updateRoomStatus`, {
-            'id': this.dealRoomInfo.id,
-            'roomStatus': this.dealRoomInfo.roomStatus,
-            'roomNo': this.dealRoomInfo.roomNo,
-            'innerLockSerialId': this.dealRoomInfo.innerLockSerialId,
-            'outerLockSerialId': this.dealRoomInfo.outerLockSerialId,
-            'orderStatus': 4,
-            'startTime': 1546300800000,
-            'endTime': 10413792000000,
-            'updateDate': this.form.time[0]
-          })
-          .then((response) => {
-            if (response.data.status === '205') {
-              this.$message.success('冻结成功')
-              this.queryAllDoorLockRoom()
-              this.dialog5 = false
-            } else {
-              this.$message.error(response.data.message)
-            }
-          })
-          .catch(() => {
-            this.$message.error('冻结失败')
-          })
-        } else {
-          postAction(`/doorLockSys/addRoomOrder`,
-          {
-            'startTime': 1546300800000,
-            'endTime': 10413792000000,
-            'roomId': this.dealRoomInfo.id,
-            'roomNo': this.dealRoomInfo.roomNo,
-            'roomStatus': 4
-          }
-          )
-          .then((response) => {
-            if (response.data.status === 201) {
-              this.$message.success('冻结成功')
-              this.queryAllDoorLockRoom()
-              this.dialog5 = false
-            } else {
+      this.$confirm({
+        title: '冻结房源',
+        icon: 'warning',
+        content: h => <p style="color:rgb(240, 197, 132);"><strong>是否冻结该房源，冻结后，所有临时密码将无法开门</strong></p>,
+        onOk: () => {
+          if (this.dealRoomInfo.orderStatus === 5) {
+            postAction(`/doorLockSys/updateRoomStatus`, {
+              'id': this.dealRoomInfo.id,
+              'roomStatus': this.dealRoomInfo.roomStatus,
+              'roomNo': this.dealRoomInfo.roomNo,
+              'innerLockSerialId': this.dealRoomInfo.innerLockSerialId,
+              'outerLockSerialId': this.dealRoomInfo.outerLockSerialId,
+              'orderStatus': 4,
+              'startTime': 1546300800000,
+              'endTime': 10413792000000,
+              'updateDate': this.form.time[0]
+            })
+            .then((response) => {
+              if (response.data.status === '205') {
+                this.$message.success('冻结成功')
+                this.queryAllDoorLockRoom()
+                this.dialog5 = false
+              } else {
+                this.$message.error(response.data.message)
+              }
+            })
+            .catch(() => {
               this.$message.error('冻结失败')
+            })
+          } else {
+            postAction(`/doorLockSys/addRoomOrder`,
+            {
+              'startTime': 1546300800000,
+              'endTime': 10413792000000,
+              'roomId': this.dealRoomInfo.id,
+              'roomNo': this.dealRoomInfo.roomNo,
+              'roomStatus': 4
             }
-          })
-          .catch(() => {
-            this.$message.error('保存失败')
-          })
+            )
+            .then((response) => {
+              if (response.data.status === 201) {
+                this.$message.success('冻结成功')
+                this.queryAllDoorLockRoom()
+                this.dialog5 = false
+              } else {
+                this.$message.error('冻结失败')
+              }
+            })
+            .catch(() => {
+              this.$message.error('保存失败')
+            })
+          }
+        },
+        onCancel () {
         }
-      }).catch(() => {
       })
     },
     editRoom(record) {
       this.$refs.roomModal.show({ roomId: record.id, type: 1 })
     },
     getRoomList(row) {
-      this.$router.push({
-        path: '/home/roomList',
-        query: {
-          roomId: row.id,
-          roomNo: row.roomNo
-        }
-      })
+      // this.$router.push({
+      //   path: '/home/roomList',
+      //   query: {
+      //     roomId: row.id,
+      //     roomNo: row.roomNo
+      //   }
+      // })
+      this.$refs.roomListModal.show(row)
     },
     bindRoom(record) {
       this.$refs.roomModal.show({ roomId: record.id, type: 0 })
     },
     closeFZ(row) {
-      this.$confirm(`此操作将解冻${row.roomNo}房间, 是否继续?`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          postAction(`/doorLockSys/unblock`,
+      this.$confirm({
+        title: '提示',
+        icon: 'warning',
+        content: `此操作将解冻${row.roomNo}房间, 是否继续?`,
+        onOk: () => {
+         postAction(`/doorLockSys/unblock`,
           {
             'id': row.id,
             'startTime': row.startTime,
@@ -925,8 +927,10 @@ export default {
             this.queryAllDoorLockRoom()
             this.dialog5 = false
           })
-        }).catch(() => {
-        })
+        },
+        onCancel () {
+        }
+      })
     },
     opensRoom(row) {
       this.form.radio = '1'
