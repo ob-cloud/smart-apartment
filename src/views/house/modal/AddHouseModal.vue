@@ -41,14 +41,14 @@
 </template>
 
 <script>
-import AddHouse from '../components/AddHouse'
+import AddHouse from '../modules/AddHouse'
 export default {
   components: { AddHouse },
   data () {
     return {
       visible: false,
-      houseTypeIndex: 3,
-      stepsNum: 1,
+      houseTypeIndex: 1, // 1. 整租， 2. 合租， 3. 整栋
+      stepsNum: 1, // 步骤
       addressObj: {
         cityId: '',
         communityId: '',

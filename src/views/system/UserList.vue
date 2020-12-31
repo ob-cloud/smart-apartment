@@ -21,14 +21,13 @@
                 </a-select>
               </a-form-item>
             </a-col>
+            <a-col :sm="12" :md="5" :lg="5">
+              <a-form-item label="邮箱">
+                <a-input placeholder="请输入邮箱查询" v-model="queryParam.email"></a-input>
+              </a-form-item>
+            </a-col>
 
             <template v-if="toggleSearchStatus">
-              <a-col :sm="12" :md="5" :lg="5">
-                <a-form-item label="邮箱">
-                  <a-input placeholder="请输入邮箱查询" v-model="queryParam.email"></a-input>
-                </a-form-item>
-              </a-col>
-
               <a-col :sm="12" :md="5" :lg="5">
                 <a-form-item label="手机号码">
                   <a-input placeholder="请输入手机号码查询" v-model="queryParam.phone"></a-input>

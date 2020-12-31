@@ -18,6 +18,7 @@ import bootstrap from './core/bootstrap'
 import './core/lazy_use' // use lazy load components
 import './utils/filter' // global filter
 import '@/assets/styles/global.less'
+import '@/utils/directives'
 
 // 百度地图组件
 import BaiduMap from 'vue-baidu-map'

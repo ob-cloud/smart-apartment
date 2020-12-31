@@ -1,25 +1,25 @@
 <template>
   <div id="addHouse" class="add-house">
-    <!-- <add-whole-house ref="addWholeHouse" @changeLoading="changeLoading" v-if="activeIndex==1" :addressObj="addressObj"></add-whole-house> -->
+    <add-whole-house ref="addWholeHouse" @changeLoading="changeLoading" v-if="activeIndex === 1" :addressObj="addressObj"></add-whole-house>
     <!-- <add-share-house ref="addShareHouse" @changeLoading="changeLoading" v-if="activeIndex==2"></add-share-house> -->
-    <add-centralized-house ref="addCentralizedHouse" @changeLoading="changeLoading" :source="source" v-if="activeIndex==3" @changeStepNum="changeStepNum" @refreshinfoFun="refreshinfoFun"></add-centralized-house>
+    <!-- <add-centralized-house ref="addCentralizedHouse" @changeLoading="changeLoading" :source="source" v-if="activeIndex === 3" @changeStepNum="changeStepNum" @refreshinfoFun="refreshinfoFun"></add-centralized-house> -->
     <div class="activeIndex clearfix">
-      <div class="f-fl normal cursor" :class="activeIndex === 2 ? 'click' : ''" @click="changeActiveIndex(2)">合租</div>
+      <!-- <div class="f-fl normal cursor" :class="activeIndex === 2 ? 'click' : ''" @click="changeActiveIndex(2)">合租</div> -->
       <div class="f-fl normal cursor" :class="activeIndex === 1 ? 'click' : ''" @click="changeActiveIndex(1)">整租</div>
-      <div class="f-fl normal cursor" :class="activeIndex === 3 ? 'click' : ''" @click="changeActiveIndex(3)">独栋</div>
+      <!-- <div class="f-fl normal cursor" :class="activeIndex === 3 ? 'click' : ''" @click="changeActiveIndex(3)">独栋</div> -->
     </div>
   </div>
 </template>
 
 <script>
-// import AddWholeHouse from './AddWholeHouse'
+import AddWholeHouse from './whole/AddWholeHouse'
 // import AddShareHouse from '../share/AddShareHouse'
 import AddCentralizedHouse from './centralized/AddCentralizedHouse'
 
 export default {
   name: 'AddHouse',
   components: {
-    // AddWholeHouse,
+    AddWholeHouse,
     // AddShareHouse,
     AddCentralizedHouse
   },
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      activeIndex: 2,
+      activeIndex: 1,
       buildingProjectId: '',
       addressObj: {
         cityId: '',

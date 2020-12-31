@@ -40,11 +40,11 @@
 import TopStatus from '@/components/MainContainer/TopStatus'
 import ContentTop from '@/components/MainContainer/ContentTop'
 import SearchDialog from '@/components/SearchDialog'
-import MoreLoading from './components/MoreLoading'
+import MoreLoading from './v1/MoreLoading'
 
-import BlockListMode from './components/BlockListMode'
-import TableListMode from './components/TableListMode'
-import AddHouseModal from './modules/AddHouseModal'
+import BlockListMode from './v1/BlockListMode'
+import TableListMode from './v1/TableListMode'
+import AddHouseModal from './v1/AddHouseModal1'
 
 export default {
   data () {

@@ -181,7 +181,7 @@ import LabelItem from '@/components/FormItem/LabelItem'
 // import * as API from '@/api/centralizedHouse'
 // import * as PublicAPI from '@/api/public'
 // import { employeeUserInfo } from '@/api/enterprise'
-import AddVillageMapModal from '../../modules/AddVillageMapModal'
+import AddVillageMapModal from '../../modal/AddVillageMapModal'
 export default {
   name: 'ContentStepOne',
     components: {
