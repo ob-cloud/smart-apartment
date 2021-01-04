@@ -28,9 +28,9 @@
       <div></div>
     </template> -->
 
-    <!-- <template v-slot:rightContentRender>
+    <template v-slot:rightContentRender>
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
-    </template> -->
+    </template>
     <!-- <template v-slot:footerRender>
       <global-footer />
     </template> -->

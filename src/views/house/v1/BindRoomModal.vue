@@ -8,43 +8,47 @@
   >
     <div id="bindRoom">
       <a-form>
-        <a-form-item label="房间名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="[ 'roomNo', {} ]" placeholder="房间名称" :disabled="disableEdit"></a-input>
-        </a-form-item>
-        <a-form-item label="地址" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-cascader
-            :disabled="disableEdit"
-            placeholder="请选择区域"
-            expand-trigger="hover"
-            v-decorator="[ 'where', {} ]"
-            :options="options2"
-            :props="props"
-          ></a-cascader>
-        </a-form-item>
-        <a-form-item label="详细地址" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="[ 'addressName', {} ]" placeholder="详细地址" :disabled="disableEdit"></a-input>
-        </a-form-item>
-        <a-form-item label="房型" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'roomTypeId', {initialValue: undefined} ]" placeholder="请选择房型" :disabled="disableEdit">
-            <a-select-option v-for="(item, index) in roomList" :key="index" :value="item.id">{{ item.roomtypeName }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="绑定网关" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'oboxSerialId', {initialValue: undefined} ]" placeholder="请选择网关" @change="changeClock" :disabled="!disableEdit">
-            <a-select-option v-for="(item, index) in lockList" :key="index" :value="item.oboxId">{{ item.oboxName }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="绑定外门锁" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'outerLockSerialId', {initialValue: undefined} ]" placeholder="（无外门锁可不选,选定则于外门锁绑定）" :disabled="!disableEdit">
-            <a-select-option value="">无</a-select-option>
-            <a-select-option v-for="(item, index) in llChild" :key="index" :value="item.deviceId">{{ item.deviceName }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="绑定内门锁" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-select v-decorator="[ 'innerLockSerialId', {initialValue: undefined} ]" placeholder="请选择内门锁" :disabled="!disableEdit">
-            <a-select-option v-for="(item, index) in llChild" :key="index" :value="item.deviceId">{{ item.deviceName }}</a-select-option>
-          </a-select>
-        </a-form-item>
+        <template v-if="!disableEdit">
+          <a-form-item label="房间名称" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-input v-decorator="[ 'roomNo', {} ]" placeholder="房间名称" :disabled="disableEdit"></a-input>
+          </a-form-item>
+          <a-form-item label="地址" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-cascader
+              :disabled="disableEdit"
+              placeholder="请选择区域"
+              expand-trigger="hover"
+              v-decorator="[ 'where', {} ]"
+              :options="options2"
+              :props="props"
+            ></a-cascader>
+          </a-form-item>
+          <a-form-item label="详细地址" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-input v-decorator="[ 'addressName', {} ]" placeholder="详细地址" :disabled="disableEdit"></a-input>
+          </a-form-item>
+          <a-form-item label="房型" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-select v-decorator="[ 'roomTypeId', {initialValue: undefined} ]" placeholder="请选择房型" :disabled="disableEdit">
+              <a-select-option v-for="(item, index) in roomList" :key="index" :value="item.id">{{ item.roomtypeName }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </template>
+        <template v-if="disableEdit">
+          <a-form-item label="绑定网关" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-select v-decorator="[ 'oboxSerialId', {initialValue: undefined} ]" placeholder="请选择网关" @change="changeClock" :disabled="!disableEdit">
+              <a-select-option v-for="(item, index) in lockList" :key="index" :value="item.oboxId">{{ item.oboxName }}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="绑定外门锁" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-select v-decorator="[ 'outerLockSerialId', {initialValue: undefined} ]" placeholder="（无外门锁可不选,选定则于外门锁绑定）" :disabled="!disableEdit">
+              <a-select-option value="">无</a-select-option>
+              <a-select-option v-for="(item, index) in llChild" :key="index" :value="item.deviceId">{{ item.deviceName }}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="绑定内门锁" :labelCol="labelCol" :wrapperCol="wrapperCol">
+            <a-select v-decorator="[ 'innerLockSerialId', {initialValue: undefined} ]" placeholder="请选择内门锁" :disabled="!disableEdit">
+              <a-select-option v-for="(item, index) in llChild" :key="index" :value="item.deviceId">{{ item.deviceName }}</a-select-option>
+            </a-select>
+          </a-form-item>
+        </template>
       </a-form>
     </div>
     <!-- <div>

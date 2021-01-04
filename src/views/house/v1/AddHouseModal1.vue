@@ -299,6 +299,9 @@ export default {
         }
       })
     }
+  },
+  destroyed () {
+    this.data = []
   }
 }
 </script>
