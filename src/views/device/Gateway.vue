@@ -47,7 +47,7 @@
           ref="table"
           bordered
           size="middle"
-          rowKey="id"
+          rowKey="oboxSerialId"
           :columns="columns"
           :dataSource="dataSource"
           :pagination="false"
@@ -65,9 +65,9 @@
             </span>
           </span>
           <span slot="action" slot-scope="text, record">
-            <a @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical" />
-            <a-dropdown>
+            <a @click="handleDetail(record)">详情</a>
+            <!-- <a-divider type="vertical" /> -->
+            <!-- <a-dropdown>
               <a class="ant-dropdown-link">
                 更多 <a-icon type="down" />
               </a>
@@ -84,19 +84,19 @@
                   </a-popconfirm>
                 </a-menu-item>
               </a-menu>
-            </a-dropdown>
+            </a-dropdown> -->
           </span>
         </a-table>
       </div>
-    <!-- table区域-end -->
-
-    <!-- <agent-modal ref="modalForm" @ok="modalFormOk"></agent-modal> -->
+      <!-- table区域-end -->
+      <!-- <agent-modal ref="modalForm" @ok="modalFormOk"></agent-modal> -->
+      <gateway-detail-modal ref="modalForm" @ok="modalFormOk"></gateway-detail-modal>
     </a-card>
   </page-header-wrapper>
 </template>
 
 <script>
-  // import AgentModal from './modules/AgentModal'
+  import GatewayDetailModal from './GatewayDetailModal'
   // import { getAgentList, delAgent } from '@/api/agent'
   import { postAction } from '@/utils/ajax'
   import { ProListMixin } from '@/utils/mixins/ProListMixin'
@@ -106,7 +106,7 @@
   export default {
     name: '',
     mixins: [ ProListMixin ],
-    // components: { AgentModal },
+    components: { GatewayDetailModal },
     data () {
       return {
         description: '这是用户管理页面',
@@ -146,7 +146,7 @@
             title: '房间号',
             align: 'center',
             dataIndex: 'roomNo'
-          }
+          },
           // {
           //   title: '添加时间',
           //   align: 'center',
@@ -155,13 +155,13 @@
           //     return t ? dayjs(t).format('YYYY-MM-DD HH:mm:ss') : ''
           //   }
           // },
-          // {
-          //   title: '操作',
-          //   dataIndex: 'action',
-          //   scopedSlots: { customRender: 'action' },
-          //   align: 'center',
-          //   width: 170
-          // }
+          {
+            title: '操作',
+            dataIndex: 'action',
+            scopedSlots: { customRender: 'action' },
+            align: 'center',
+            width: 170
+          }
         ]
       }
     },
@@ -174,22 +174,24 @@
       getDataList (arg) {
         this.loading = true
         postAction(`/doorLockSys/queryDoorLockObox`, {
-        'isValid': this.queryParam.isValid,
-        'online': this.queryParam.online,
-        'roomNo': this.queryParam.roomNo,
-        'adminId': this.adminId
-      })
-      .then((response) => {
-        console.log(response)
-        if (response.data.status === 200) {
-          this.dataSource = response.data.data
-        } else {
+          'isValid': this.queryParam.isValid,
+          'online': this.queryParam.online,
+          'roomNo': this.queryParam.roomNo,
+          'adminId': this.adminId
+        })
+        .then((response) => {
+          console.log(response)
+          if (response.data.status === 200) {
+            this.dataSource = response.data.data
+          } else {
+            this.$message.error('网关列表查询失败')
+          }
+        })
+        .catch(() => {
           this.$message.error('网关列表查询失败')
-        }
-      })
-      .catch(() => {
-        this.$message.error('网关列表查询失败')
-      }).finally(() => { this.loading = false })
+        }).finally(() => { this.loading = false })
+        // TODO
+        this.dataSource = require('./gateway').default.data
       },
       handleDelete (id) {
       },
